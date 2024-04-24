@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/TestLvl.unity
+    guid: 6087d9f4de0223346b71d779bd9b48a3
+  - enabled: 0
+    path: Assets/Scenes/Deprecated/CamTestScene.unity
+    guid: d97a1f530dc4c3b46b3148974c4093be
+  - enabled: 0
+    path: Assets/Scenes/Deprecated/Menu.unity
+    guid: 69a27357211239d4d9a4140c3b9f0820
+  - enabled: 0
+    path: Assets/Scenes/Deprecated/Select.unity
+    guid: 3771c2c86e25a3d40bfc0cdc55f0cdbf
+  - enabled: 0
+    path: Assets/Scenes/Deprecated/Level 1.unity
+    guid: fbef701deece28b4d890865fdbcaa435
+  - enabled: 0
+    path: Assets/Scenes/Deprecated/Level 2.unity
+    guid: e3b6846e3ee585441b65baacd7ac7bd0
+  - enabled: 0
+    path: Assets/Scenes/Deprecated/Level 3.unity
+    guid: 28bffbb5f00f08240999840315dd6197
+  - enabled: 0
+    path: Assets/Scenes/Deprecated/Level 4.unity
+    guid: f6927e51dccd3b048a9c3d17c7661e9a
+  - enabled: 0
+    path: Assets/Scenes/Deprecated/Level 5.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  m_configObjects: {}
