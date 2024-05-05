@@ -5,21 +5,17 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     Queue<Transform> WayPoints;
+    [SerializeField] Rigidbody rb;
+    [SerializeField] int speed;
 
-
-    //private void Start()
-    //{
-    //    char[] pin = new char[6];
-    //    pin[0] = (char)0x2B;
-    //    pin[1] = (char)0xF6;
-    //    pin[2] = (char)0x39;
-    //    pin[3] = (char)0xAB;
-    //    pin[4] = (char)0x17;
-    //    pin[5] = (char)0x00;
-    //}
+    void Start()
+    {
+        
+    }
 
     void Update()
     {
-        transform.position += transform.forward * 10 * Time.deltaTime;    
+        //transform.position += transform.forward * 10 * Time.deltaTime;
+        rb.AddForce((transform.forward * speed) * Time.deltaTime);
     }
 }

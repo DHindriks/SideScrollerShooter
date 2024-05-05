@@ -39,6 +39,7 @@ public class WeaponBase : MonoBehaviour
 
 
     GameObject Target;
+    public Vector3 targetPos; 
 
     [SerializeField] LayerMask mask;
     [SerializeField] LayerMask Targetmask;
@@ -74,6 +75,11 @@ public class WeaponBase : MonoBehaviour
 
     }
 
+    public virtual void StopAim()
+    {
+
+    }
+
     public virtual void Update()
     {
         //MARK TARGET
@@ -97,6 +103,7 @@ public class WeaponBase : MonoBehaviour
                 }
 
                 Target = NewTarget;
+                targetPos = Target.transform.position;
             }else
             {
                 FreeAim = true;
@@ -130,7 +137,7 @@ public class WeaponBase : MonoBehaviour
                 //{
                 //    Target = hit.transform.root.gameObject;
                 //}
-
+                Debug.Log("hit");
                 //CROSSHAIR
                 if (!CrosshairAnimator.GetBool("FadedIn"))
                 {
@@ -140,12 +147,14 @@ public class WeaponBase : MonoBehaviour
 
                 transform.rotation = Quaternion.LookRotation((hit.point - transform.position).normalized);
                 CrosshairObj.position = cam.WorldToScreenPoint(hit.point);
+                targetPos = hit.point;
                 Shoot();
 
             }
             else if (AimPlane.Raycast(Pray, out PHit))
             {
                 Vector3 dir = Pray.GetPoint(PHit);
+                targetPos = Pray.GetPoint(PHit);
                 transform.rotation = Quaternion.LookRotation((dir - transform.position).normalized);
                 CrosshairObj.position = cam.WorldToScreenPoint(dir);
 
