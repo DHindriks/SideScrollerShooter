@@ -21,7 +21,7 @@ public struct WeaponStats
 
     public GameObject BulletPrefab;
 
-    public Sprite CrosshairSprite;
+    public GameObject Crosshairobj;
 }
 
 
@@ -38,26 +38,31 @@ public class WeaponBase : MonoBehaviour
     public WeaponStats weaponStats;
 
 
+
+    //aiming
+    [SerializeField] LayerMask mask; //mask for any environment in free aim(also includes targettable)
+    [SerializeField] LayerMask Targetmask; //mask for targettable objects
+    [SerializeField] Transform PlanePos;
+    Plane AimPlane;
+    bool FreeAim;
+    float ClickTimeStamp;
     GameObject Target;
     public Vector3 targetPos; 
-
-    [SerializeField] LayerMask mask;
-    [SerializeField] LayerMask Targetmask;
 
 
     [SerializeField] Camera cam;
 
-    [SerializeField]
-    Transform PlanePos;
 
+    //crosshair
     [SerializeField] Transform CrosshairObj;
-    [SerializeField] Animator CrosshairAnimator;
-    Plane AimPlane;
-    bool FreeAim;
-    float ClickTimeStamp;
+    GameObject CrosshairInstance;
+    Animator CrosshairAnimator;
+
+
     private void Start()
     {
-        CrosshairObj.GetComponent<Image>().sprite = weaponStats.CrosshairSprite;
+        CrosshairInstance = Instantiate(weaponStats.Crosshairobj, CrosshairObj);
+        CrosshairAnimator = CrosshairInstance.GetComponent<Animator>();
     }
 
     public virtual void Shoot()
@@ -77,7 +82,11 @@ public class WeaponBase : MonoBehaviour
 
     public virtual void StopAim()
     {
-
+        if (FreeAim)
+        {
+            FreeAim = false;
+            Target = null;
+        }
     }
 
     public virtual void Update()
@@ -110,7 +119,7 @@ public class WeaponBase : MonoBehaviour
             }
 
 
-            ClickTimeStamp = Time.time + 0.75f;
+            ClickTimeStamp = Time.time + 0.3f;
         }
 
 
@@ -126,18 +135,15 @@ public class WeaponBase : MonoBehaviour
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
+            //Remove target if there is one
             if (Target != null)
             {
                 Target = null;
             }
 
+            //free aim with phys ray(Collides with environment)
             if (Physics.Raycast(ray, out hit, 200, mask))
             {
-                //if (hit.transform.root.GetComponent<Health>())
-                //{
-                //    Target = hit.transform.root.gameObject;
-                //}
-                Debug.Log("hit");
                 //CROSSHAIR
                 if (!CrosshairAnimator.GetBool("FadedIn"))
                 {
@@ -151,7 +157,7 @@ public class WeaponBase : MonoBehaviour
                 Shoot();
 
             }
-            else if (AimPlane.Raycast(Pray, out PHit))
+            else if (AimPlane.Raycast(Pray, out PHit)) //if no environment object was hit use the background plane
             {
                 Vector3 dir = Pray.GetPoint(PHit);
                 targetPos = Pray.GetPoint(PHit);
@@ -166,7 +172,7 @@ public class WeaponBase : MonoBehaviour
 
                 Shoot();
             }
-        }else if (Target != null)
+        }else if (Target != null) //Shoot at target
         {
             //CROSSHAIR
             if (!CrosshairAnimator.GetBool("FadedIn"))
@@ -177,25 +183,23 @@ public class WeaponBase : MonoBehaviour
 
             transform.rotation = Quaternion.LookRotation((Target.transform.position - transform.position).normalized);
             CrosshairObj.position = cam.WorldToScreenPoint(Target.transform.position);
+            targetPos = Target.transform.position;
             Shoot();
         }
-        else
+        else //if there is no target and no free aiming, stop aiming
         {
             //CROSSHAIR
             if (CrosshairAnimator.GetBool("FadedIn"))
             {
                 CrosshairAnimator.SetBool("FadedIn", false);
+                StopAim();
             }
         }
 
         //DISABLE FREE AIM
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            if (FreeAim)
-            {
-                FreeAim = false;
-                Target = null;
-            }
+            StopAim();
         }
 
     }

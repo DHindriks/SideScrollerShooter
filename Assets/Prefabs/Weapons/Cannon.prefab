@@ -4999,17 +4999,17 @@ MonoBehaviour:
     BulletLifeTime: 4
     BulletPrefab: {fileID: 7157479167460938127, guid: 3f3652196a233d7438745135d3ecab3e,
       type: 3}
-    CrosshairSprite: {fileID: 21300000, guid: 3e7a44b38caf68a46bf43f3d450a8043, type: 3}
-  targetPos: {x: 0, y: 0, z: 0}
+    Crosshairobj: {fileID: 4128709215822229686, guid: 678a4cb6aadcfc34684539d2172e5f33,
+      type: 3}
   mask:
     serializedVersion: 2
     m_Bits: 1079
   Targetmask:
     serializedVersion: 2
     m_Bits: 1024
-  cam: {fileID: 0}
   PlanePos: {fileID: 0}
+  targetPos: {x: 0, y: 0, z: 0}
+  cam: {fileID: 0}
   CrosshairObj: {fileID: 0}
-  CrosshairAnimator: {fileID: 0}
   SpreadAngleX: 0
   SpreadAngleY: 0

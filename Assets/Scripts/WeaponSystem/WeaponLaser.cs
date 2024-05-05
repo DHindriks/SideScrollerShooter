@@ -13,6 +13,11 @@ public class WeaponLaser : WeaponBase
         {
             CancelInvoke();
 
+            if (!laser.gameObject.activeSelf)
+            {
+                laser.gameObject.SetActive(true);
+            }
+
             laser.SetPosition(0, transform.position);
             laser.SetPosition(1, targetPos);
 
@@ -34,5 +39,11 @@ public class WeaponLaser : WeaponBase
     {
         base.ResetOverheat();
         laser.gameObject.SetActive(true);
+    }
+
+    public override void StopAim()
+    {
+        base.StopAim();
+        laser.gameObject.SetActive(false);
     }
 }

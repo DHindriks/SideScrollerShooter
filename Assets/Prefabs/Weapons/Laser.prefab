@@ -4999,18 +4999,18 @@ MonoBehaviour:
     BulletSpeed: 0
     BulletLifeTime: 0
     BulletPrefab: {fileID: 0}
-    CrosshairSprite: {fileID: 21300000, guid: 3e7a44b38caf68a46bf43f3d450a8043, type: 3}
-  targetPos: {x: 0, y: 0, z: 0}
+    Crosshairobj: {fileID: 4128709215822229686, guid: 678a4cb6aadcfc34684539d2172e5f33,
+      type: 3}
   mask:
     serializedVersion: 2
     m_Bits: 1047
   Targetmask:
     serializedVersion: 2
     m_Bits: 1024
-  cam: {fileID: 0}
   PlanePos: {fileID: 0}
+  targetPos: {x: 0, y: 0, z: 0}
+  cam: {fileID: 0}
   CrosshairObj: {fileID: 0}
-  CrosshairAnimator: {fileID: 0}
   laser: {fileID: 8271947809776768812}
 --- !u!1 &6795116112418572082
 GameObject:
