@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Rigidbody rb;
     [SerializeField] int speed;
 
-    heightLayers Currentlayer;
+    heightLayers Currentlayer = heightLayers.L2;
     bool SwitchingLayers = false;
     float LayerSwitchTimeS = 1;
 
@@ -27,6 +27,38 @@ public class PlayerMovement : MonoBehaviour
     {
         //transform.position += transform.forward * 10 * Time.deltaTime;
         rb.AddForce((transform.forward * speed) * Time.deltaTime);
+    }
+
+    public void LayerUp()
+    {
+        switch (Currentlayer)
+        {
+            case heightLayers.L1:
+                SwitchHeight(heightLayers.L2);
+                break;
+            case heightLayers.L2:
+                SwitchHeight(heightLayers.L3);
+                break;
+            case heightLayers.L3:
+                Debug.LogWarning("cannot go Higher");
+                break;
+        }
+    }
+
+    public void LayerDown()
+    {
+        switch (Currentlayer)
+        {
+            case heightLayers.L3:
+                SwitchHeight(heightLayers.L2);
+                break;
+            case heightLayers.L2:
+                SwitchHeight(heightLayers.L1);
+                break;
+            case heightLayers.L1:
+                Debug.LogWarning("cannot go Lower");
+                break;
+        }
     }
 
     void SwitchHeight(heightLayers NewLayer)
@@ -67,8 +99,11 @@ public class PlayerMovement : MonoBehaviour
             CurrentProgress = Mathf.InverseLerp(StartTime, EndTime, Time.time);
             CurrentY = Mathf.Lerp(CurrentHeight, NewHeight, CurrentProgress);
             transform.position = new Vector3(transform.position.x, CurrentY, transform.position.z);
+            yield return null;
         }
 
+
+        SwitchingLayers = false;
         yield return null;
     }
 }
