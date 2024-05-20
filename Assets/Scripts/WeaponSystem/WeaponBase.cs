@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.EventSystems;
 
 [Serializable]
 public struct WeaponStats
@@ -92,7 +93,7 @@ public class WeaponBase : MonoBehaviour
     public virtual void Update()
     {
         //MARK TARGET
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !EventSystem.current.IsPointerOverGameObject())
         {
             Ray TargetFinder = cam.ScreenPointToRay(Input.mousePosition); ;
             RaycastHit[] hit = Physics.SphereCastAll(TargetFinder, 5, 200, Targetmask, QueryTriggerInteraction.UseGlobal);
@@ -124,7 +125,7 @@ public class WeaponBase : MonoBehaviour
 
 
         //FREE AIM
-        if (Input.GetKey(KeyCode.Mouse0)  && (ClickTimeStamp < Time.time || FreeAim))
+        if (Input.GetKey(KeyCode.Mouse0)  && (ClickTimeStamp < Time.time || FreeAim) && !EventSystem.current.IsPointerOverGameObject())
         {
             //Plane ray
             Ray Pray = cam.ScreenPointToRay(Input.mousePosition);
