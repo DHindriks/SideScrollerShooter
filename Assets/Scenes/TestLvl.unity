@@ -149,6 +149,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Laser
       objectReference: {fileID: 0}
+    - target: {fileID: 3656075436848938240, guid: 5846a06278364a946817ae592799c916,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3656075436848938241, guid: 5846a06278364a946817ae592799c916,
         type: 3}
       propertyPath: m_RootOrder
@@ -219,6 +224,12 @@ PrefabInstance:
       propertyPath: CrosshairObj
       value: 
       objectReference: {fileID: 442312259}
+    - target: {fileID: 8714495578028827705, guid: 5846a06278364a946817ae592799c916,
+        type: 3}
+      propertyPath: weaponStats.Crosshairobj
+      value: 
+      objectReference: {fileID: 4128709215822229686, guid: 678a4cb6aadcfc34684539d2172e5f33,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5846a06278364a946817ae592799c916, type: 3}
 --- !u!1 &180695270
@@ -1667,5 +1678,11 @@ PrefabInstance:
       propertyPath: CrosshairObj
       value: 
       objectReference: {fileID: 442312259}
+    - target: {fileID: 3656075436848938242, guid: c21d13a58892bdc4e8a4b67e9a49f23c,
+        type: 3}
+      propertyPath: weaponStats.Crosshairobj
+      value: 
+      objectReference: {fileID: 4128709215822229686, guid: 678a4cb6aadcfc34684539d2172e5f33,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c21d13a58892bdc4e8a4b67e9a49f23c, type: 3}
