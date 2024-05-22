@@ -46,6 +46,7 @@ public class WeaponBase : MonoBehaviour
     [SerializeField] Transform PlanePos;
     Plane AimPlane;
     bool FreeAim;
+    bool Aiming;
     float ClickTimeStamp;
     GameObject Target;
     public Vector3 targetPos; 
@@ -83,11 +84,18 @@ public class WeaponBase : MonoBehaviour
 
     public virtual void StopAim()
     {
-        if (FreeAim)
+
+        FreeAim = false;
+        Aiming = false;
+        Target = null;
+        Debug.Log("MARK");
+
+        //CROSSHAIR
+        if (CrosshairAnimator.GetBool("FadedIn"))
         {
-            FreeAim = false;
-            Target = null;
+            CrosshairAnimator.SetBool("FadedIn", false);
         }
+        
     }
 
     public virtual void Update()
@@ -95,31 +103,8 @@ public class WeaponBase : MonoBehaviour
         //MARK TARGET
         if (Input.GetKeyDown(KeyCode.Mouse0) && !EventSystem.current.IsPointerOverGameObject())
         {
-            Ray TargetFinder = cam.ScreenPointToRay(Input.mousePosition); ;
-            RaycastHit[] hit = Physics.SphereCastAll(TargetFinder, 5, 200, Targetmask, QueryTriggerInteraction.UseGlobal);
-
-            if (hit.Length > 0)
-            {
-                GameObject NewTarget = null;
-                float Dist = 100;
-
-                foreach(RaycastHit raycastHit in hit)
-                {
-                    if (Vector3.Distance(raycastHit.point, raycastHit.transform.position) < Dist)
-                    {
-                        Dist = Vector3.Distance(TargetFinder.GetPoint(Vector3.Distance(cam.transform.position, raycastHit.transform.position)), raycastHit.transform.position);
-                        NewTarget = raycastHit.transform.gameObject;
-                    }
-                }
-
-                Target = NewTarget;
-                targetPos = Target.transform.position;
-            }else
-            {
-                FreeAim = true;
-            }
-
-
+            
+            //TODO: Record mouse pos for later comparison
             ClickTimeStamp = Time.time + 0.3f;
         }
 
@@ -127,6 +112,8 @@ public class WeaponBase : MonoBehaviour
         //FREE AIM
         if (Input.GetKey(KeyCode.Mouse0)  && (ClickTimeStamp < Time.time || FreeAim) && !EventSystem.current.IsPointerOverGameObject())
         {
+            FreeAim = true;
+            Aiming = true;
             //Plane ray
             Ray Pray = cam.ScreenPointToRay(Input.mousePosition);
             float PHit = 0;
@@ -186,21 +173,45 @@ public class WeaponBase : MonoBehaviour
             CrosshairObj.position = cam.WorldToScreenPoint(Target.transform.position);
             targetPos = Target.transform.position;
             Shoot();
-        }
-        else //if there is no target and no free aiming, stop aiming
+        }else if (Target == null && Aiming)
         {
-            //CROSSHAIR
-            if (CrosshairAnimator.GetBool("FadedIn"))
-            {
-                CrosshairAnimator.SetBool("FadedIn", false);
-                StopAim();
-            }
+            StopAim();
         }
 
         //DISABLE FREE AIM
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            StopAim();
+            if (FreeAim)
+            {
+                StopAim(); //stop freeaim
+                return;
+
+            }else if (!FreeAim)  //MARK TARGET
+            {
+                Ray TargetFinder = cam.ScreenPointToRay(Input.mousePosition); ;
+                RaycastHit[] hit = Physics.SphereCastAll(TargetFinder, 5, 200, Targetmask, QueryTriggerInteraction.UseGlobal);
+
+                if (hit.Length > 0)
+                {
+                    GameObject NewTarget = null;
+                    float Dist = 100;
+
+                    foreach (RaycastHit raycastHit in hit)
+                    {
+                        if (Vector3.Distance(raycastHit.point, raycastHit.transform.position) < Dist)
+                        {
+                            Dist = Vector3.Distance(TargetFinder.GetPoint(Vector3.Distance(cam.transform.position, raycastHit.transform.position)), raycastHit.transform.position);
+                            NewTarget = raycastHit.transform.gameObject;
+                        }
+                    }
+
+                    Target = NewTarget;
+                    Aiming = true;
+                    targetPos = Target.transform.position;
+                }
+            }
+
+
         }
 
     }
