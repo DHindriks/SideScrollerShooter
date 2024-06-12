@@ -30,7 +30,6 @@ public class PlayerMovement : MonoBehaviour
     bool Aiming;
     float ClickTimeStamp;
     GameObject Target;
-    public Vector3 targetPos;
 
 
     [SerializeField] Camera cam;
@@ -84,49 +83,44 @@ public class PlayerMovement : MonoBehaviour
             {
                 foreach(WeaponBase weapon in Weapons)
                 {
-                    //CROSSHAIR
-                    if (!weapon.CrosshairAnimator.GetBool("FadedIn"))
-                    {
-                        weapon.CrosshairAnimator.SetBool("FadedIn", true);
-                    }
+                    weapon.FadeCrosshair(true);
+
+
+                    weapon.transform.rotation = Quaternion.LookRotation((hit.point - transform.position).normalized);
+                weapon.targetPos = hit.point;
+                weapon.CrosshairObj.position = cam.WorldToScreenPoint(hit.point);
+                weapon.Shoot();
                 }
-
-
-                transform.rotation = Quaternion.LookRotation((hit.point - transform.position).normalized);
-                CrosshairObj.position = cam.WorldToScreenPoint(hit.point);
-                targetPos = hit.point;
-                Shoot();
 
             }
             else if (AimPlane.Raycast(Pray, out PHit)) //if no environment object was hit use the background plane
             {
                 Vector3 dir = Pray.GetPoint(PHit);
-                targetPos = Pray.GetPoint(PHit);
-                transform.rotation = Quaternion.LookRotation((dir - transform.position).normalized);
-                CrosshairObj.position = cam.WorldToScreenPoint(dir);
 
-                //CROSSHAIR
-                if (!CrosshairAnimator.GetBool("FadedIn"))
+                foreach (WeaponBase weapon in Weapons)
                 {
-                    CrosshairAnimator.SetBool("FadedIn", true);
-                }
+                    weapon.transform.rotation = Quaternion.LookRotation((dir - transform.position).normalized);
+                    weapon.CrosshairObj.position = cam.WorldToScreenPoint(dir);
+                    weapon.targetPos = Pray.GetPoint(PHit);
 
-                Shoot();
+                    weapon.FadeCrosshair(true);
+
+                    weapon.Shoot();
+                }
             }
         }
         else if (Target != null) //Shoot at target
         {
-            //CROSSHAIR
-            if (!CrosshairAnimator.GetBool("FadedIn"))
+            foreach (WeaponBase weapon in Weapons)
             {
-                CrosshairAnimator.SetBool("FadedIn", true);
+
+                weapon.FadeCrosshair(true);
+
+                weapon.targetPos = Target.transform.position;
+                weapon.transform.rotation = Quaternion.LookRotation((Target.transform.position - transform.position).normalized);
+                weapon.CrosshairObj.position = cam.WorldToScreenPoint(Target.transform.position);
+                weapon.Shoot();
             }
-
-
-            transform.rotation = Quaternion.LookRotation((Target.transform.position - transform.position).normalized);
-            CrosshairObj.position = cam.WorldToScreenPoint(Target.transform.position);
-            targetPos = Target.transform.position;
-            Shoot();
         }
         else if (Target == null && Aiming)
         {
@@ -163,7 +157,10 @@ public class PlayerMovement : MonoBehaviour
 
                     Target = NewTarget;
                     Aiming = true;
-                    targetPos = Target.transform.position;
+                    foreach (WeaponBase weapon in Weapons)
+                    {
+                        weapon.targetPos = Target.transform.position;
+                    }
                 }
             }
 
@@ -179,12 +176,10 @@ public class PlayerMovement : MonoBehaviour
         Target = null;
         Debug.Log("MARK");
 
-        //CROSSHAIR
-        if (CrosshairAnimator.GetBool("FadedIn"))
+        foreach (WeaponBase weapon in Weapons)
         {
-            CrosshairAnimator.SetBool("FadedIn", false);
+            weapon.FadeCrosshair(false);
         }
-
     }
 
     public void LayerUp()

@@ -38,18 +38,28 @@ public class WeaponBase : MonoBehaviour
 
     public WeaponStats weaponStats;
 
+    public Vector3 targetPos;
 
 
     //crosshair
-    [SerializeField] Transform CrosshairObj;
-    GameObject CrosshairInstance;
-    Animator CrosshairAnimator;
+    public Transform CrosshairObj;
+    public GameObject CrosshairInstance;
+    public Animator CrosshairAnimator;
 
 
     private void Start()
     {
         CrosshairInstance = Instantiate(weaponStats.Crosshairobj, CrosshairObj);
         CrosshairAnimator = CrosshairInstance.GetComponent<Animator>();
+    }
+
+    public virtual void FadeCrosshair(bool fadedin)
+    {
+        //CROSSHAIR
+        if (!CrosshairAnimator.GetBool("FadedIn"))
+        {
+            CrosshairAnimator.SetBool("FadedIn", fadedin);
+        }
     }
 
     public virtual void Shoot()
@@ -75,6 +85,11 @@ public class WeaponBase : MonoBehaviour
     public virtual void Update()
     {
 
+
+    }
+
+    public virtual void StopAim()
+    {
 
     }
 
