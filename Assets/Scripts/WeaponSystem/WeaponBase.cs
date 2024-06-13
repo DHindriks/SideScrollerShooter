@@ -48,6 +48,7 @@ public class WeaponBase : MonoBehaviour
     bool FreeAim;
     bool Aiming;
     float ClickTimeStamp;
+    Vector3 LastClickPos;
     GameObject Target;
     public Vector3 targetPos; 
 
@@ -106,6 +107,7 @@ public class WeaponBase : MonoBehaviour
             
             //TODO: Record mouse pos for later comparison
             ClickTimeStamp = Time.time + 0.3f;
+            LastClickPos = Input.mousePosition;
         }
 
 
@@ -186,7 +188,7 @@ public class WeaponBase : MonoBehaviour
                 StopAim(); //stop freeaim
                 return;
 
-            }else if (!FreeAim)  //MARK TARGET
+            }else if (!FreeAim && Vector3.Distance(LastClickPos, Input.mousePosition) < 40)  //MARK TARGET
             {
                 Ray TargetFinder = cam.ScreenPointToRay(Input.mousePosition); ;
                 RaycastHit[] hit = Physics.SphereCastAll(TargetFinder, 5, 200, Targetmask, QueryTriggerInteraction.UseGlobal);
