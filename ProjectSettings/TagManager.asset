@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Block
   - Projectile
+  - EnemyProjectile
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - Player
   - PProjectile
   - Targettable
-  - 
+  - EnemyProjectile
   - 
   - 
   - 

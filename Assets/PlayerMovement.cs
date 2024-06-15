@@ -16,16 +16,24 @@ public class PlayerMovement : MonoBehaviour
 
     heightLayers Currentlayer = heightLayers.L2;
     bool SwitchingLayers = false;
-    float LayerSwitchTimeS = 1;
+    float LayerSwitchTimeS = .75f;
 
     Vector3 fp;   //First touch position
     Vector3 lp;   //Last touch position
     float dragDistance = 100;  //minimum distance for a swipe to be registered
     float TouchTimeStamp;
 
-    void Start()
+    int Health = 3; //amount of hits the player can survive
+
+    void OnTriggerEnter(Collider other)
     {
-        
+        if (other.tag == "EnemyProjectile")
+        {
+            Health--;
+
+            //check player health
+        }
+
     }
 
     void Update()
@@ -149,7 +157,7 @@ public class PlayerMovement : MonoBehaviour
             yield return null;
         }
 
-
+        transform.position = new Vector3(transform.position.x, NewHeight, transform.position.z);
         SwitchingLayers = false;
         yield return null;
     }
