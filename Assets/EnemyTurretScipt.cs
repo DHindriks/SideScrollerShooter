@@ -8,6 +8,7 @@ public class EnemyTurretScipt : MonoBehaviour
     [SerializeField] GameObject RocketPrefab;
     [SerializeField] int BarrageSize;
     [SerializeField] float RocketFireRate;
+    [SerializeField] GameObject DeathParticles;
 
     int[] Layers = new int[] {25, 20, 15};
     GameObject player;
@@ -15,7 +16,6 @@ public class EnemyTurretScipt : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        Shoot();
     }
 
     public void Shoot()
@@ -37,4 +37,13 @@ public class EnemyTurretScipt : MonoBehaviour
             Invoke("SpawnRocket", RocketFireRate);
         }
     }
+
+    public void HealthZero()
+    {
+        CancelInvoke();
+        GameObject deathPart = Instantiate(DeathParticles);
+        deathPart.transform.position = transform.position;
+        Destroy(gameObject);
+    }
+
 }

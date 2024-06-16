@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8349159734747636038}
   - component: {fileID: 8349159734747636036}
   - component: {fileID: 8349159734747636037}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: EjectSmoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4821,7 +4821,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8349159735333133332}
   - component: {fileID: 8349159735333133323}
-  m_Layer: 0
+  - component: {fileID: 1205933053}
+  - component: {fileID: 9079637135090165653}
+  m_Layer: 10
   m_Name: EnemyTurret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4860,6 +4862,62 @@ MonoBehaviour:
     type: 3}
   BarrageSize: 5
   RocketFireRate: 4
+  DeathParticles: {fileID: 2112915769598176411, guid: 0c6d71fe95c54e24f892579883c70a49,
+    type: 3}
+--- !u!65 &1205933053
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8349159735333133333}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4, y: 6, z: 4}
+  m_Center: {x: 0, y: 1.63, z: 0}
+--- !u!114 &9079637135090165653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8349159735333133333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7800f8c987513fd439e5ffbbec9427a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 250
+  OnHealthChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8349159735333133323}
+        m_MethodName: Shoot
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnHealthZero:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8349159735333133323}
+        m_MethodName: HealthZero
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8349159735670544892
 GameObject:
   m_ObjectHideFlags: 0
@@ -4871,7 +4929,7 @@ GameObject:
   - component: {fileID: 8349159735670544883}
   - component: {fileID: 8349159735670544881}
   - component: {fileID: 8349159735670544882}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9570,7 +9628,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 37621295026c1ce49ba4f1a20e8ebfef, type: 2}
   - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -9610,7 +9668,7 @@ ParticleSystemRenderer:
   m_ApplyActiveColorSpace: 1
   m_AllowRoll: 1
   m_VertexStreams: 00010304
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 2534964839176971238, guid: 221eb76ce3ace3d4dacac2dbe5b87d8a, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
@@ -9696,6 +9754,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7946206670685518860, guid: 03c1dd96316a3504b8bb91cdc4841aa4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3f32d8e249d1ab14298b76093b38fe65, type: 2}
     - target: {fileID: -5870488369468073351, guid: 03c1dd96316a3504b8bb91cdc4841aa4,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -9716,11 +9779,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4198421389747228059, guid: 03c1dd96316a3504b8bb91cdc4841aa4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3f32d8e249d1ab14298b76093b38fe65, type: 2}
+    - target: {fileID: -1702430395602233465, guid: 03c1dd96316a3504b8bb91cdc4841aa4,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 599686778633323873, guid: 03c1dd96316a3504b8bb91cdc4841aa4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 37621295026c1ce49ba4f1a20e8ebfef, type: 2}
     - target: {fileID: 919132149155446097, guid: 03c1dd96316a3504b8bb91cdc4841aa4,
         type: 3}
       propertyPath: m_Name
       value: SideScrollerShooterMissileTurret
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 03c1dd96316a3504b8bb91cdc4841aa4,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3222120746061169951, guid: 03c1dd96316a3504b8bb91cdc4841aa4,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3768606481132292304, guid: 03c1dd96316a3504b8bb91cdc4841aa4,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4617993641711430012, guid: 03c1dd96316a3504b8bb91cdc4841aa4,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -9741,6 +9834,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5399700831583248088, guid: 03c1dd96316a3504b8bb91cdc4841aa4,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6209972153812194248, guid: 03c1dd96316a3504b8bb91cdc4841aa4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3f32d8e249d1ab14298b76093b38fe65, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 03c1dd96316a3504b8bb91cdc4841aa4, type: 3}
 --- !u!1 &9160116422369384222 stripped
