@@ -7,6 +7,8 @@ public class Health : MonoBehaviour
 {
     public float health;
 
+    [SerializeField] int KillScore;
+
     public UnityEvent OnHealthChanged;
     public UnityEvent OnHealthZero;
 
@@ -22,6 +24,10 @@ public class Health : MonoBehaviour
         if (health <= 0)
         {
             OnHealthZero.Invoke();
+            if (ScoreManager.Instance != null)
+            {
+                ScoreManager.Instance.AddScore(KillScore);
+            }
         }
     }
 }

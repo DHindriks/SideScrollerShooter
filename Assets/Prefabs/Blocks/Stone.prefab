@@ -125,7 +125,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 300
+  KillScore: 15
   OnHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHealthZero:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &5843955931801363625

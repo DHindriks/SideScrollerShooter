@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerScript : MonoBehaviour
 {
     enum heightLayers
     {
@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] Rigidbody rb;
     [SerializeField] int speed;
+    [SerializeField] GameObject CollExplosionPrefab;
 
     heightLayers Currentlayer = heightLayers.L2;
     bool SwitchingLayers = false;
@@ -31,7 +32,11 @@ public class PlayerMovement : MonoBehaviour
         {
             Health--;
 
-            //check player health
+            GameObject collpart = Instantiate(CollExplosionPrefab);
+            collpart.transform.position = other.transform.position;
+            Destroy(other.gameObject);
+
+            // if health 0, game over
         }
 
     }
@@ -75,10 +80,6 @@ public class PlayerMovement : MonoBehaviour
                             LayerDown();
                         }
                     }
-                }
-                else
-                {   //It's a tap as the drag distance is less than 20% of the screen height
-                    Debug.Log("Tap");
                 }
             }
         }
