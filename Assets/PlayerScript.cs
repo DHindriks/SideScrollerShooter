@@ -24,7 +24,15 @@ public class PlayerScript : MonoBehaviour
     float dragDistance = 100;  //minimum distance for a swipe to be registered
     float TouchTimeStamp;
 
+    [SerializeField]bool AllowControls = true;
+    public List<WeaponBase> Weapons;
+
     int Health = 3; //amount of hits the player can survive
+
+    void Start()
+    {
+        SetControls(false);
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -37,47 +45,61 @@ public class PlayerScript : MonoBehaviour
             Destroy(other.gameObject);
 
             // if health 0, game over
+            SetControls(false);
         }
 
     }
 
+    public void SetControls(bool enabled)
+    {
+        AllowControls = enabled;
+        foreach (WeaponBase weapon in Weapons)
+        {
+            weapon.AllowControls = enabled;
+        }
+    }
+
     void Update()
     {
-        //transform.position += transform.forward * 10 * Time.deltaTime;
-        rb.AddForce((transform.forward * speed) * Time.deltaTime);
-
-        if (Input.touchCount >= 1)
+        if (AllowControls)
         {
-            Touch touch = Input.GetTouch(0);
-            if (touch.phase == TouchPhase.Began)
-            {
-                fp = touch.position;
-                lp = touch.position;
-                TouchTimeStamp = Time.time;
-            }
-            else if (touch.phase == TouchPhase.Moved)
-            {
-                lp = touch.position;
-            }
-            else if (touch.phase == TouchPhase.Ended && (TouchTimeStamp + 1) > Time.time)
-            {
-                lp = touch.position;
 
-                //Check if drag distance is greater than 20% of the screen height
-                if (Mathf.Abs(lp.x - fp.x) > dragDistance || Mathf.Abs(lp.y - fp.y) > dragDistance)
-                {//It's a drag
-                 //check if the drag is vertical or horizontal
-                    if (Mathf.Abs(lp.x - fp.x) < Mathf.Abs(lp.y - fp.y))
-                    {
-                        if (lp.y > fp.y)  //If the movement was up
-                        {   //Up swipe
-                            Debug.Log("Up Swipe");
-                            LayerUp();
-                        }
-                        else
-                        {   //Down swipe
-                            Debug.Log("Down Swipe");
-                            LayerDown();
+            //transform.position += transform.forward * 10 * Time.deltaTime;
+            rb.AddForce((transform.forward * speed) * Time.deltaTime);
+
+            if (Input.touchCount >= 1)
+            {
+                Touch touch = Input.GetTouch(0);
+                if (touch.phase == TouchPhase.Began)
+                {
+                    fp = touch.position;
+                    lp = touch.position;
+                    TouchTimeStamp = Time.time;
+                }
+                else if (touch.phase == TouchPhase.Moved)
+                {
+                    lp = touch.position;
+                }
+                else if (touch.phase == TouchPhase.Ended && (TouchTimeStamp + 1) > Time.time)
+                {
+                    lp = touch.position;
+
+                    //Check if drag distance is greater than 20% of the screen height
+                    if (Mathf.Abs(lp.x - fp.x) > dragDistance || Mathf.Abs(lp.y - fp.y) > dragDistance)
+                    {//It's a drag
+                     //check if the drag is vertical or horizontal
+                        if (Mathf.Abs(lp.x - fp.x) < Mathf.Abs(lp.y - fp.y))
+                        {
+                            if (lp.y > fp.y)  //If the movement was up
+                            {   //Up swipe
+                                Debug.Log("Up Swipe");
+                                LayerUp();
+                            }
+                            else
+                            {   //Down swipe
+                                Debug.Log("Down Swipe");
+                                LayerDown();
+                            }
                         }
                     }
                 }

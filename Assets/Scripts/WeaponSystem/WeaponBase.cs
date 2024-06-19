@@ -60,10 +60,12 @@ public class WeaponBase : MonoBehaviour
     [SerializeField] Transform CrosshairObj;
     GameObject CrosshairInstance;
     Animator CrosshairAnimator;
+    public bool AllowControls = true;
 
 
     private void Start()
     {
+        GetComponentInParent<PlayerScript>().Weapons.Add(this);
         CrosshairInstance = Instantiate(weaponStats.Crosshairobj, CrosshairObj);
         CrosshairAnimator = CrosshairInstance.GetComponent<Animator>();
     }
@@ -101,121 +103,128 @@ public class WeaponBase : MonoBehaviour
 
     public virtual void Update()
     {
-        //MARK TARGET
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !EventSystem.current.IsPointerOverGameObject())
+        if (AllowControls)
         {
-            
-            //TODO: Record mouse pos for later comparison
-            ClickTimeStamp = Time.time + 0.3f;
-            LastClickPos = Input.mousePosition;
-        }
 
 
-        //FREE AIM
-        if (Input.GetKey(KeyCode.Mouse0)  && (ClickTimeStamp < Time.time || FreeAim) && !EventSystem.current.IsPointerOverGameObject())
-        {
-            FreeAim = true;
-            Aiming = true;
-            //Plane ray
-            Ray Pray = cam.ScreenPointToRay(Input.mousePosition);
-            float PHit = 0;
-            AimPlane = new Plane(PlanePos.forward, PlanePos.position);
-
-            //phys ray
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            //Remove target if there is one
-            if (Target != null)
+            //MARK TARGET
+            if (Input.GetKeyDown(KeyCode.Mouse0) && !EventSystem.current.IsPointerOverGameObject())
             {
-                Target = null;
+
+                //TODO: Record mouse pos for later comparison
+                ClickTimeStamp = Time.time + 0.3f;
+                LastClickPos = Input.mousePosition;
             }
 
-            //free aim with phys ray(Collides with environment)
-            if (Physics.Raycast(ray, out hit, 200, mask))
+
+            //FREE AIM
+            if (Input.GetKey(KeyCode.Mouse0) && (ClickTimeStamp < Time.time || FreeAim) && !EventSystem.current.IsPointerOverGameObject())
             {
-                //CROSSHAIR
-                if (!CrosshairAnimator.GetBool("FadedIn"))
+                FreeAim = true;
+                Aiming = true;
+                //Plane ray
+                Ray Pray = cam.ScreenPointToRay(Input.mousePosition);
+                float PHit = 0;
+                AimPlane = new Plane(PlanePos.forward, PlanePos.position);
+
+                //phys ray
+                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                //Remove target if there is one
+                if (Target != null)
                 {
-                    CrosshairAnimator.SetBool("FadedIn", true);
-                }
-                
-
-                transform.rotation = Quaternion.LookRotation((hit.point - transform.position).normalized);
-                CrosshairObj.position = cam.WorldToScreenPoint(hit.point);
-                targetPos = hit.point;
-                Shoot();
-
-            }
-            else if (AimPlane.Raycast(Pray, out PHit)) //if no environment object was hit use the background plane
-            {
-                Vector3 dir = Pray.GetPoint(PHit);
-                targetPos = Pray.GetPoint(PHit);
-                transform.rotation = Quaternion.LookRotation((dir - transform.position).normalized);
-                CrosshairObj.position = cam.WorldToScreenPoint(dir);
-
-                //CROSSHAIR
-                if (!CrosshairAnimator.GetBool("FadedIn"))
-                {
-                    CrosshairAnimator.SetBool("FadedIn", true);
+                    Target = null;
                 }
 
-                Shoot();
-            }
-        }else if (Target != null) //Shoot at target
-        {
-            //CROSSHAIR
-            if (!CrosshairAnimator.GetBool("FadedIn"))
-            {
-                CrosshairAnimator.SetBool("FadedIn", true);
-            }
-
-
-            transform.rotation = Quaternion.LookRotation((Target.transform.position - transform.position).normalized);
-            CrosshairObj.position = cam.WorldToScreenPoint(Target.transform.position);
-            targetPos = Target.transform.position;
-            Shoot();
-        }else if (Target == null && Aiming)
-        {
-            StopAim();
-        }
-
-        //DISABLE FREE AIM
-        if (Input.GetKeyUp(KeyCode.Mouse0))
-        {
-            if (FreeAim)
-            {
-                StopAim(); //stop freeaim
-                return;
-
-            }else if (!FreeAim && Vector3.Distance(LastClickPos, Input.mousePosition) < 40)  //MARK TARGET
-            {
-                Ray TargetFinder = cam.ScreenPointToRay(Input.mousePosition); ;
-                RaycastHit[] hit = Physics.SphereCastAll(TargetFinder, 5, 200, Targetmask, QueryTriggerInteraction.UseGlobal);
-
-                if (hit.Length > 0)
+                //free aim with phys ray(Collides with environment)
+                if (Physics.Raycast(ray, out hit, 200, mask))
                 {
-                    GameObject NewTarget = null;
-                    float Dist = 100;
-
-                    foreach (RaycastHit raycastHit in hit)
+                    //CROSSHAIR
+                    if (!CrosshairAnimator.GetBool("FadedIn"))
                     {
-                        if (Vector3.Distance(raycastHit.point, raycastHit.transform.position) < Dist)
-                        {
-                            Dist = Vector3.Distance(TargetFinder.GetPoint(Vector3.Distance(cam.transform.position, raycastHit.transform.position)), raycastHit.transform.position);
-                            NewTarget = raycastHit.transform.gameObject;
-                        }
+                        CrosshairAnimator.SetBool("FadedIn", true);
                     }
 
-                    Target = NewTarget;
-                    Aiming = true;
-                    targetPos = Target.transform.position;
+
+                    transform.rotation = Quaternion.LookRotation((hit.point - transform.position).normalized);
+                    CrosshairObj.position = cam.WorldToScreenPoint(hit.point);
+                    targetPos = hit.point;
+                    Shoot();
+
+                }
+                else if (AimPlane.Raycast(Pray, out PHit)) //if no environment object was hit use the background plane
+                {
+                    Vector3 dir = Pray.GetPoint(PHit);
+                    targetPos = Pray.GetPoint(PHit);
+                    transform.rotation = Quaternion.LookRotation((dir - transform.position).normalized);
+                    CrosshairObj.position = cam.WorldToScreenPoint(dir);
+
+                    //CROSSHAIR
+                    if (!CrosshairAnimator.GetBool("FadedIn"))
+                    {
+                        CrosshairAnimator.SetBool("FadedIn", true);
+                    }
+
+                    Shoot();
                 }
             }
+            else if (Target != null) //Shoot at target
+            {
+                //CROSSHAIR
+                if (!CrosshairAnimator.GetBool("FadedIn"))
+                {
+                    CrosshairAnimator.SetBool("FadedIn", true);
+                }
 
 
+                transform.rotation = Quaternion.LookRotation((Target.transform.position - transform.position).normalized);
+                CrosshairObj.position = cam.WorldToScreenPoint(Target.transform.position);
+                targetPos = Target.transform.position;
+                Shoot();
+            }
+            else if (Target == null && Aiming)
+            {
+                StopAim();
+            }
+
+            //DISABLE FREE AIM
+            if (Input.GetKeyUp(KeyCode.Mouse0))
+            {
+                if (FreeAim)
+                {
+                    StopAim(); //stop freeaim
+                    return;
+
+                }
+                else if (!FreeAim && Vector3.Distance(LastClickPos, Input.mousePosition) < 40)  //MARK TARGET
+                {
+                    Ray TargetFinder = cam.ScreenPointToRay(Input.mousePosition); ;
+                    RaycastHit[] hit = Physics.SphereCastAll(TargetFinder, 5, 200, Targetmask, QueryTriggerInteraction.UseGlobal);
+
+                    if (hit.Length > 0)
+                    {
+                        GameObject NewTarget = null;
+                        float Dist = 100;
+
+                        foreach (RaycastHit raycastHit in hit)
+                        {
+                            if (Vector3.Distance(raycastHit.point, raycastHit.transform.position) < Dist)
+                            {
+                                Dist = Vector3.Distance(TargetFinder.GetPoint(Vector3.Distance(cam.transform.position, raycastHit.transform.position)), raycastHit.transform.position);
+                                NewTarget = raycastHit.transform.gameObject;
+                            }
+                        }
+
+                        Target = NewTarget;
+                        Aiming = true;
+                        targetPos = Target.transform.position;
+                    }
+                }
+
+
+            }
         }
-
     }
 
     public virtual void ResetOverheat()
