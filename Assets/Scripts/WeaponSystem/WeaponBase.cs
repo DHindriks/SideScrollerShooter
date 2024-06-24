@@ -45,7 +45,7 @@ public class WeaponBase : MonoBehaviour
     [SerializeField] LayerMask Targetmask; //mask for targettable objects
     [SerializeField] Transform PlanePos;
     Plane AimPlane;
-    bool FreeAim;
+    public bool FreeAim;
     bool Aiming;
     float ClickTimeStamp;
     Vector3 LastClickPos;

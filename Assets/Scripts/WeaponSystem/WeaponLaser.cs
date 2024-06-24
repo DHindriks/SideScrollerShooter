@@ -13,7 +13,7 @@ public class WeaponLaser : WeaponBase
 
     public override void Shoot()
     {
-        if (!overHeating && currentCooldown < Time.time && targetPos != Vector3.zero)
+        if (!overHeating && currentCooldown < Time.time && targetPos != Vector3.zero && !FreeAim)
         {
             CancelInvoke();
 
