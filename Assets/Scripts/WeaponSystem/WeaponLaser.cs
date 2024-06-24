@@ -7,6 +7,10 @@ public class WeaponLaser : WeaponBase
 
     [SerializeField] LineRenderer laser;
 
+
+    Health TargetHealth;
+    int CurrentDmg = 50;
+
     public override void Shoot()
     {
         if (!overHeating && currentCooldown < Time.time && targetPos != Vector3.zero)
@@ -27,17 +31,23 @@ public class WeaponLaser : WeaponBase
 
             if (OverHeatScale >= 10)
             {
-                overHeating = true;
-                laser.gameObject.SetActive(false);
-                Invoke("ResetOverheat", weaponStats.overHeatCooldown);
+                if (Target.GetComponent<Health>())
+                {
+                    Target.GetComponent<Health>().Damage(CurrentDmg);
+                    CurrentDmg += 50;
+                }
+                //overHeating = true;
+                //laser.gameObject.SetActive(false);
                 OverHeatParticles.Play();
+                Invoke("ResetOverheat", weaponStats.overHeatCooldown);
             }
         }
     }
 
     public override void ResetOverheat()
     {
-        base.ResetOverheat();
+        overHeating = false;
+        OverHeatScale = 0;
         laser.gameObject.SetActive(true);
     }
 
@@ -45,5 +55,6 @@ public class WeaponLaser : WeaponBase
     {
         base.StopAim();
         laser.gameObject.SetActive(false);
+        CurrentDmg = 50;
     }
 }

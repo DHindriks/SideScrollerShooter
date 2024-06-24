@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3f32d8e249d1ab14298b76093b38fe65, type: 2}
+  - {fileID: 2100000, guid: d1c524180da10bf479c900a729343f13, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4891,7 +4891,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3f32d8e249d1ab14298b76093b38fe65, type: 2}
+  - {fileID: 2100000, guid: d1c524180da10bf479c900a729343f13, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4923,7 +4923,7 @@ GameObject:
   - component: {fileID: 3656075436848938241}
   - component: {fileID: 3656075436848938242}
   m_Layer: 8
-  m_Name: Cannon
+  m_Name: GatlingGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4962,13 +4962,13 @@ MonoBehaviour:
   currentCooldown: 0
   OverHeatParticles: {fileID: 3656075436267723607}
   weaponStats:
-    HeatAccumulation: 3.3333333
+    HeatAccumulation: 0
     overHeatCooldown: 2
-    fireRateRPS: 0.3
-    damage: 50
-    BulletSpeed: 60
+    fireRateRPS: 0.05
+    damage: 15
+    BulletSpeed: 80
     BulletLifeTime: 4
-    BulletPrefab: {fileID: 7157479167460938127, guid: 3f3652196a233d7438745135d3ecab3e,
+    BulletPrefab: {fileID: 7157479167460938127, guid: ace741ad92a887d479484839c6818390,
       type: 3}
     Crosshairobj: {fileID: 4128709215822229686, guid: 678a4cb6aadcfc34684539d2172e5f33,
       type: 3}
@@ -4983,5 +4983,5 @@ MonoBehaviour:
   cam: {fileID: 0}
   CrosshairObj: {fileID: 0}
   AllowControls: 1
-  SpreadAngleX: 15
-  SpreadAngleY: 15
+  SpreadAngleX: 6
+  SpreadAngleY: 6

@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -11759,6 +11759,7 @@ MonoBehaviour:
   PlayableWeapons:
   - {fileID: 3656075436848938242, guid: c21d13a58892bdc4e8a4b67e9a49f23c, type: 3}
   - {fileID: 8714495578028827705, guid: 5846a06278364a946817ae592799c916, type: 3}
+  - {fileID: 3656075436848938242, guid: 18ea92576328547488031585ed1a4461, type: 3}
 --- !u!4 &1942632902
 Transform:
   m_ObjectHideFlags: 0

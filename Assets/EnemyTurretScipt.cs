@@ -13,6 +13,8 @@ public class EnemyTurretScipt : MonoBehaviour
     int[] Layers = new int[] {25, 20, 15};
     GameObject player;
 
+    bool Activated = false;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -20,10 +22,11 @@ public class EnemyTurretScipt : MonoBehaviour
 
     public void Shoot()
     {
-        if (player != null)
+        if (player != null && !Activated)
         {
             animator.SetBool("Activated", true);
             Invoke("SpawnRocket", 5 + RocketFireRate);
+            Activated = true;
         }
     }
 

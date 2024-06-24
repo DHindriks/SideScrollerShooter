@@ -112,8 +112,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a00bed802f18b0043a9bcda0ef3cab02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Icon: {fileID: 21300000, guid: d45aef91942f1d4409e0a0bba9aec1f5, type: 3}
+  Icon: {fileID: 0}
   Damage: 0
+  DoImpactDMG: 0
+  DoImpactDMGOnce: 0
   Origin: {fileID: 0}
   Lifetime: 0
 --- !u!114 &-2668223558069869571

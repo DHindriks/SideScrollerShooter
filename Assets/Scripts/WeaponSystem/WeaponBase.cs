@@ -49,7 +49,7 @@ public class WeaponBase : MonoBehaviour
     bool Aiming;
     float ClickTimeStamp;
     Vector3 LastClickPos;
-    GameObject Target;
+    public GameObject Target;
     public Vector3 targetPos; 
 
 

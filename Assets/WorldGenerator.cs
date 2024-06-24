@@ -33,7 +33,7 @@ public class WorldGenerator : MonoBehaviour
         
         SpawnTile();
         SpawnTile();
-        InvokeRepeating("SpawnTile", 0, 10);
+        InvokeRepeating("SpawnTile", 0, 12);
 
     }
 
