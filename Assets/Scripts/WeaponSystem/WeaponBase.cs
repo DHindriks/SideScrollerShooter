@@ -65,7 +65,15 @@ public class WeaponBase : MonoBehaviour
 
     private void Start()
     {
+        if (!GetComponentInParent<PlayerScript>())
+        {
+            this.enabled = false;
+            return;
+        }
         GetComponentInParent<PlayerScript>().Weapons.Add(this);
+        CrosshairObj = GetComponentInParent<PlayerScript>().CrosshairHolder;
+        cam = GetComponentInParent<PlayerScript>().MainCam;
+        PlanePos = GetComponentInParent<PlayerScript>().BackPlane;
         CrosshairInstance = Instantiate(weaponStats.Crosshairobj, CrosshairObj);
         CrosshairAnimator = CrosshairInstance.GetComponent<Animator>();
     }

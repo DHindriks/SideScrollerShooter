@@ -7,9 +7,8 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
 
-    public CameraScript cameraScript;
-
-    public LevelManager CurrentLevel;
+    public ShipData CurrentShip;
+    public List<WeaponBase> weapons;
 
     // Start is called before the first frame update
     void Start()

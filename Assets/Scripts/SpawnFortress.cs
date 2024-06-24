@@ -10,12 +10,19 @@ public class SpawnFortress : MonoBehaviour
 
     [SerializeField]
     List<GameObject> Structures;
+
+    GameObject Structure;
     void Start()
     {
         if (Structures.Count != 0)
         {
-            GameObject Structure = Instantiate(Structures[Random.Range(0, Structures.Count)]);
+            Structure = Instantiate(Structures[Random.Range(0, Structures.Count)]);
             Structure.transform.position = transform.position;
         }
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(Structure);
     }
 }

@@ -14,6 +14,7 @@ public class WorldGenerator : MonoBehaviour
     Tileset CurrentTileset;
 
     List<Tile> CurrentTiles;
+    Queue<GameObject> tiles;
     int TileAmount = 0;
 
 
@@ -25,11 +26,14 @@ public class WorldGenerator : MonoBehaviour
         }
 
         CurrentTiles = new List<Tile>();
+        tiles = new Queue<GameObject>();
 
         WorldGenRandom = new System.Random(RDMSeed);
         CurrentTileset = tilesets[UnityEngine.Random.Range(0, tilesets.Count)];
-
-        InvokeRepeating("SpawnTile", 0, 5);
+        
+        SpawnTile();
+        SpawnTile();
+        InvokeRepeating("SpawnTile", 0, 10);
 
     }
 
@@ -48,6 +52,12 @@ public class WorldGenerator : MonoBehaviour
         GameObject NewTile = Instantiate(TileToSpawn.gameObject);
         NewTile.transform.position = NewPos;
         CurrentTiles.Add(NewTile.GetComponent<Tile>());
+        tiles.Enqueue(NewTile);
+
+        if (tiles.Count > 6)
+        {
+            Destroy(tiles.Dequeue());
+        }
         TileAmount++;
     }
 

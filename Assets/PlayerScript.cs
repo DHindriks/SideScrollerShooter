@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -15,6 +17,11 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] int speed;
     [SerializeField] GameObject CollExplosionPrefab;
 
+    [SerializeField] GameObject GameOverScreen;
+    [SerializeField] ScoreManager scoreManager;
+    [SerializeField] TextMeshProUGUI Scoretext;
+    [SerializeField] ParticleSystem DeathEffect;
+
     heightLayers Currentlayer = heightLayers.L2;
     bool SwitchingLayers = false;
     float LayerSwitchTimeS = .75f;
@@ -27,11 +34,47 @@ public class PlayerScript : MonoBehaviour
     [SerializeField]bool AllowControls = true;
     public List<WeaponBase> Weapons;
 
-    int Health = 3; //amount of hits the player can survive
+    GameManager gameManager;
+    ShipData shipData;
+
+    public Transform BackPlane;
+    public Camera MainCam;
+    public Transform CrosshairHolder;
+
+    public int Health = 3; //amount of hits the player can survive
 
     void Start()
     {
         SetControls(false);
+        gameManager = GameManager.Instance;
+        GetSkinAndWeapons();
+    }
+
+    void GetSkinAndWeapons()
+    {
+        //remove any other objects
+        foreach(Transform obj in transform.GetChild(0))
+        {
+            Destroy(obj.gameObject);
+        }
+        //get the skin, set data ref
+        GameObject skin = Instantiate(gameManager.CurrentShip.gameObject, transform.GetChild(0));
+        shipData = skin.GetComponent<ShipData>();
+        skin.transform.position = transform.GetChild(0).position;
+
+        //remove any other objects from weapon holder
+        foreach (Transform obj in transform.GetChild(1))
+        {
+            Destroy(obj.gameObject);
+        }
+
+        for(int i = 0; i < shipData.WeaponSlots.Count; i++)
+        {
+            GameObject wpn = Instantiate(gameManager.weapons[i].gameObject);
+            wpn.transform.SetParent(shipData.WeaponSlots[i]);
+            wpn.transform.position = shipData.WeaponSlots[i].position;
+        }
+        SetControls(true);
     }
 
     void OnTriggerEnter(Collider other)
@@ -45,9 +88,25 @@ public class PlayerScript : MonoBehaviour
             Destroy(other.gameObject);
 
             // if health 0, game over
-            SetControls(false);
+            if (Health <= 0)
+            {
+                SetControls(false);
+                DeathEffect.Play();
+                Invoke("OpenGameOverscreen", 4);
+            }
         }
 
+    }
+
+    void OpenGameOverscreen()
+    {
+        Scoretext.text = "Score: " + scoreManager.Score;
+        GameOverScreen.SetActive(true);
+    }
+
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
     public void SetControls(bool enabled)
