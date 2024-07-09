@@ -7,20 +7,23 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
 
-    public ShipData CurrentShip;
+    public ShipConfig CurrentShip;
     public List<WeaponBase> weapons;
 
+    public int TotalCredits { get; private set; }
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         transform.SetParent(null);
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        TotalCredits = PlayerPrefs.GetInt("PlayerCredits", 0);
     }
-
-    // Update is called once per frame
-    void Update()
+    
+    public void AddSubCredits(int AmountToAddSub)
     {
-        
+        TotalCredits += AmountToAddSub;
+        PlayerPrefs.SetInt("PlayerCredits", TotalCredits);
     }
 }

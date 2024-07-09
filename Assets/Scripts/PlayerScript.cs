@@ -35,7 +35,7 @@ public class PlayerScript : MonoBehaviour
     public List<WeaponBase> Weapons;
 
     GameManager gameManager;
-    ShipData shipData;
+    ShipConfig shipData;
 
     public Transform BackPlane;
     public Camera MainCam;
@@ -59,7 +59,7 @@ public class PlayerScript : MonoBehaviour
         }
         //get the skin, set data ref
         GameObject skin = Instantiate(gameManager.CurrentShip.gameObject, transform.GetChild(0));
-        shipData = skin.GetComponent<ShipData>();
+        shipData = skin.GetComponent<ShipConfig>();
         skin.transform.position = transform.GetChild(0).position;
 
         //remove any other objects from weapon holder
@@ -100,7 +100,8 @@ public class PlayerScript : MonoBehaviour
 
     void OpenGameOverscreen()
     {
-        Scoretext.text = "Score: " + scoreManager.Score;
+        Scoretext.text = "Credits earned: " + scoreManager.Score;
+        gameManager.AddSubCredits(scoreManager.Score);
         GameOverScreen.SetActive(true);
     }
 

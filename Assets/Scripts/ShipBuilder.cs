@@ -11,6 +11,15 @@ enum PickableParts
     Weapon,
 }
 
+public enum ShipColors
+{
+    Blue,
+    Green,
+    Orange,
+    Purple,
+    Red,
+}
+
 public class ShipBuilder : MonoBehaviour
 {
 
@@ -22,9 +31,12 @@ public class ShipBuilder : MonoBehaviour
     [SerializeField] Button LeftBtn;
     [SerializeField] Button RightBtn;
 
-    [SerializeField] List<ShipData> PlayableShips;
+    [SerializeField] ConfirmWindow ChoiceWindow;
+
+    [SerializeField] List<ShipConfig> PlayableShips;
     [SerializeField] List<WeaponBase> PlayableWeapons;
 
+    GameObject NewObj;
     GameManager gameManager;
     PickableParts CurrentlyPicking;
     int currentIndex;
@@ -87,13 +99,18 @@ public class ShipBuilder : MonoBehaviour
             Destroy(obj.gameObject);
         }
 
-        GameObject NewObj;
-
         switch (CurrentlyPicking)
         {
             case PickableParts.Ship:
                 NewObj = Instantiate(PlayableShips[currentIndex].gameObject, PreviewContainer);
                 NewObj.transform.position = PreviewContainer.position;
+                if (NewObj.GetComponent<ShipConfig>().data.Unlocked)
+                {
+                    ConfirmBtn.GetComponentInChildren<TextMeshProUGUI>().text = "Select";
+                }else
+                {
+                    ConfirmBtn.GetComponentInChildren<TextMeshProUGUI>().text = "Ship Locked";
+                }
                 break;
 
             case PickableParts.Weapon:
@@ -108,11 +125,31 @@ public class ShipBuilder : MonoBehaviour
         switch (CurrentlyPicking)
         {
             case PickableParts.Ship:
-                gameManager.CurrentShip = PlayableShips[currentIndex];
-                CurrentlyPicking = PickableParts.Weapon;
-                TitleTextBox.text = "Pick a weapon";
-                ResetBtn.interactable = true;
-                ResetPicker();
+                if (PlayableShips[currentIndex].data.Unlocked)
+                {
+                    //pick unlocked ship
+                    gameManager.CurrentShip = PlayableShips[currentIndex];
+                    CurrentlyPicking = PickableParts.Weapon;
+                    TitleTextBox.text = "Pick a weapon";
+                    ResetBtn.interactable = true;
+                    ResetPicker();
+                }else if (gameManager.TotalCredits > PlayableShips[currentIndex].ShipValue)
+                {
+                    //picked locked ship, enough credits, buy ship?
+                    ChoiceWindow.MainText.text = PlayableShips[currentIndex].data.Name + " has not been unlocked yet, do you want to buy this ship for " + PlayableShips[currentIndex].ShipValue + " credits?";
+                    ChoiceWindow.ConfirmText.text = "Confirm";
+                    ChoiceWindow.CancelText.text = "Cancel";
+                    ChoiceWindow.gameObject.SetActive(true);
+                }
+                else
+                {
+                    //not enough credits, direct to store?
+                    ChoiceWindow.MainText.text = "You do not have enough credits to buy " + PlayableShips[currentIndex].data.Name + ", do you want to purchase credits in the store?";
+                    ChoiceWindow.ConfirmText.text = "Go to store";
+                    ChoiceWindow.ConfirmBtn.onClick.AddListener(() => OpenStore());
+                    ChoiceWindow.CancelText.text = "Cancel";
+                    ChoiceWindow.gameObject.SetActive(true);
+                }
                 break;
             case PickableParts.Weapon:
                 gameManager.weapons.Add(PlayableWeapons[currentIndex]);
@@ -131,8 +168,18 @@ public class ShipBuilder : MonoBehaviour
         }
     }
 
+    public void SetColor(int colorindex)
+    {
+        NewObj.GetComponent<ShipConfig>().SetSkin(colorindex);
+    }
+
     public void Launch()
     {
         SceneManager.LoadScene("InGame", LoadSceneMode.Single);
+    }
+
+    public void OpenStore()
+    {
+        SceneManager.LoadScene("Store", LoadSceneMode.Single);
     }
 }
