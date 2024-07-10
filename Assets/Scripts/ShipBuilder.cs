@@ -54,6 +54,8 @@ public class ShipBuilder : MonoBehaviour
         ResetBtn.interactable = false;
         LeftBtn.interactable = true;
         RightBtn.interactable = true;
+        gameManager.CurrentShip = null;
+        gameManager.weapons.Clear();
     }
 
     public void ResetPicker()

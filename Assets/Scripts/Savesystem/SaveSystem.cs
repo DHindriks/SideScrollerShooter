@@ -7,7 +7,7 @@ public static class SaveSystem {
     public static void SaveShip(ShipData ship)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/"+ship.Name + "SRShip.sav";
+        string path = Application.persistentDataPath + "/"+ ship.Name + "SRShip.sav";
         FileStream stream = new FileStream(path, FileMode.Create);
 
         ShipData data = ship;
