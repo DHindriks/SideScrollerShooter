@@ -137,6 +137,7 @@ public class ShipBuilder : MonoBehaviour
                 {
                     //picked locked ship, enough credits, buy ship?
                     ChoiceWindow.MainText.text = PlayableShips[currentIndex].data.Name + " has not been unlocked yet, do you want to buy this ship for " + PlayableShips[currentIndex].ShipValue + " credits?";
+                    ChoiceWindow.ConfirmBtn.onClick.AddListener(() => UnlockShip()); ;
                     ChoiceWindow.ConfirmText.text = "Confirm";
                     ChoiceWindow.CancelText.text = "Cancel";
                     ChoiceWindow.gameObject.SetActive(true);
@@ -166,6 +167,13 @@ public class ShipBuilder : MonoBehaviour
                 TitleTextBox.text = "Pick a weapon for slot " + (WeaponsPicked + 1);
                 break;
         }
+    }
+
+    public void UnlockShip()
+    {
+        PlayableShips[currentIndex].UnlockShip();
+        gameManager.AddSubCredits(-PlayableShips[currentIndex].ShipValue);
+        RefreshPreview();
     }
 
     public void SetColor(int colorindex)

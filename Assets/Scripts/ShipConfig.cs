@@ -26,7 +26,7 @@ public class ShipConfig : MonoBehaviour
         GetComponent<MeshRenderer>().material.mainTexture = Skins[data.Skin];
     }
 
-    void UnlockShip()
+    public void UnlockShip()
     {
         data.Unlocked = true;
         SaveSystem.SaveShip(data);
